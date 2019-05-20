@@ -6,6 +6,7 @@ import Proptypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CoursesList from "./CoursesList";
 import { Redirect } from "react-router-dom";
+import toast from "react-toastify";
 
 class CoursesPage extends React.Component {
   state = { redirectToAddPage: false };
@@ -21,6 +22,16 @@ class CoursesPage extends React.Component {
     }
   }
 
+  handleDeleteCourse = course => {
+    this.props.courseActions
+      .deleteCourse(course)
+      .then(() => {
+        this.props.courseActions.loadCourses();
+        toast.success("Course deleted successfully");
+      })
+      .catch(error => toast.error("There was an error deleting this course"));
+  };
+
   render() {
     return (
       <>
@@ -31,7 +42,10 @@ class CoursesPage extends React.Component {
         >
           Add course
         </button>
-        <CoursesList courses={this.props.courses} />
+        <CoursesList
+          courses={this.props.courses}
+          onDeleteClick={this.handleDeleteCourse}
+        />
       </>
     );
   }

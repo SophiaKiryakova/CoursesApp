@@ -40,3 +40,9 @@ export function saveCourse(course) {
       });
   };
 }
+
+export function deleteCourse(course) {
+  return function(dispatch) {
+    return courseApi.deleteCourse(course.id);
+  };
+}
